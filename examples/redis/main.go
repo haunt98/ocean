@@ -29,6 +29,8 @@ func main() {
 
 	oc := ocean.NewRedisOcean(client)
 
+	// key - value : string - string
+
 	key := viper.GetString("key")
 	assert.True(key != "", "empty key")
 
@@ -41,6 +43,8 @@ func main() {
 		log.Fatalf("failed to get: %s\n", err)
 	}
 	log.Printf("value %s\n", value)
+
+	// key - value: string - struct
 
 	if err := oc.Set(context.Background(), key, foo{
 		Bar: "Hello world",
