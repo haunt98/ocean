@@ -10,6 +10,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+type foo struct {
+	Bar string `json:"bar"`
+}
+
 func main() {
 	viper.AutomaticEnv()
 
@@ -33,10 +37,20 @@ func main() {
 	}
 
 	var value string
-
 	if err := oc.Get(context.Background(), key, &value); err != nil {
 		log.Fatalf("failed to get: %s\n", err)
 	}
-
 	log.Printf("value %s\n", value)
+
+	if err := oc.Set(context.Background(), key, foo{
+		Bar: "Hello world",
+	}); err != nil {
+		log.Fatalf("failed to set: %s\n", err)
+	}
+
+	var valueFoo foo
+	if err := oc.Get(context.Background(), key, &valueFoo); err != nil {
+		log.Fatalf("failed to get: %s\n", err)
+	}
+	log.Printf("value %+v\n", valueFoo)
 }
